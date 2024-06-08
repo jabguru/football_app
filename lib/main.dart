@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:football_app/constants/colors.dart';
+import 'package:football_app/constants/global_variables.dart';
 import 'package:football_app/pages/base_screen.dart';
 
 void main() {
@@ -20,16 +21,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Football App',
       debugShowCheckedModeBanner: false,
+      navigatorKey: GlobalVariables.navigatorKey,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: kScaffoldColor,
         appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            titleTextStyle: TextStyle(
-              color: kWhiteColor,
-              fontSize: 17.52,
-              fontWeight: FontWeight.w600,
-            )),
+          backgroundColor: Colors.transparent,
+          titleTextStyle: TextStyle(
+            color: kWhiteColor,
+            fontSize: 17.52,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         fontFamily: 'Poppins',
       ),
       home: const BaseScreen(),

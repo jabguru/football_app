@@ -34,7 +34,7 @@ class HorizontalSpacing extends StatelessWidget {
 
 //Calculate equivalent of size in design to size in screen height
 double eqH(double inDesign, double screenHeight) =>
-    (inDesign / 711.38) * screenHeight;
+    (inDesign / 672.83) * screenHeight;
 
 //Calculate equivalent of size in design to size in screen Width
 double eqW(double inDesign, double screenWidth) =>
