@@ -41,9 +41,15 @@ class $AssetsImagesGen {
   /// File path: assets/images/Home.png
   AssetGenImage get home => const AssetGenImage('assets/images/Home.png');
 
-  /// File path: assets/images/LiveScore.png
-  AssetGenImage get liveScore =>
-      const AssetGenImage('assets/images/LiveScore.png');
+  /// File path: assets/images/Icon Back.svg
+  SvgGenImage get iconBack => const SvgGenImage('assets/images/Icon Back.svg');
+
+  /// File path: assets/images/Icon Information.svg
+  SvgGenImage get iconInformation =>
+      const SvgGenImage('assets/images/Icon Information.svg');
+
+  /// File path: assets/images/LiveScore.svg
+  SvgGenImage get liveScore => const SvgGenImage('assets/images/LiveScore.svg');
 
   /// File path: assets/images/Notification.png
   AssetGenImage get notification =>
@@ -51,6 +57,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/Profile.png
   AssetGenImage get profile => const AssetGenImage('assets/images/Profile.png');
+
+  /// File path: assets/images/match info bg.png
+  AssetGenImage get matchInfoBg =>
+      const AssetGenImage('assets/images/match info bg.png');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -61,9 +71,12 @@ class $AssetsImagesGen {
         category,
         document,
         home,
+        iconBack,
+        iconInformation,
         liveScore,
         notification,
-        profile
+        profile,
+        matchInfoBg
       ];
 }
 

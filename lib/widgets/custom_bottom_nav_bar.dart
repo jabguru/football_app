@@ -16,9 +16,8 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool needsPadding = MediaQuery.of(context).viewPadding.bottom > 0;
-    final double screenWidth = MediaQuery.sizeOf(context).width;
 
-    double iconHeight = eqW(21.03, screenWidth);
+    double iconHeight = eqW(21.03);
 
     return DecoratedBox(
       decoration: const BoxDecoration(

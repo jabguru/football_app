@@ -7,3 +7,4 @@ const Color kGrey1 = Color(0xFFDADADA);
 const Color kGrey2 = Color(0xFF797979);
 const Color kScaffoldColor = Color(0xFF181928);
 const Color kSecondaryColor = Color(0XFF222232);
+const Color kMatchTimeColor = Color(0XFF4DFF89);

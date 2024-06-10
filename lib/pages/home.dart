@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
 import 'package:football_app/gen/assets.gen.dart';
+import 'package:football_app/widgets/match_card.dart';
+import 'package:football_app/widgets/match_schedule.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,43 +15,65 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    final double screenHeight = MediaQuery.sizeOf(context).height;
-
     return Scaffold(
       // appBar: AppBar(
-      //   leading: Assets.images.category.image(width: eqW(22.78, screenWidth)),
-      //   title: Assets.images.liveScore.image(width: eqW(82.35, screenWidth)),
+      //   leading: Assets.images.category.image(width: eqW(22.78)),
+      //   title: Assets.images.liveScore.image(width: eqW(82.35)),
       //   actions: [
-      //     Assets.images.notification.image(width: eqW(22.78, screenWidth)),
+      //     Assets.images.notification.image(width: eqW(22.78)),
       //   ],
 
       // ),
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenPadding(screenWidth),
-                vertical: eqW(12.27, screenWidth),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Assets.images.category.image(width: eqW(22.78, screenWidth)),
-                  Assets.images.liveScore.image(width: eqW(82.35, screenWidth)),
-                  Assets.images.notification
-                      .image(width: eqW(22.78, screenWidth)),
-                ],
-              ),
+            CustomAppBar(
+              leading: Assets.images.category.image(width: eqW(22.78)),
+              title: Assets.images.liveScore.image(width: eqW(82.35)),
+              trailing: Assets.images.notification.image(width: eqW(22.78)),
             ),
-            SizedBox(
-              height: eqH(140, screenHeight),
+            Expanded(
               child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  LiveMatchWidget(),
-                  LiveMatchWidget(notShowing: true),
+                children: [
+                  SizedBox(
+                    height: eqH(140),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        LiveMatchWidget(),
+                        LiveMatchWidget(notStarted: true),
+                      ],
+                    ),
+                  ),
+                  VerticalSpacing(eqH(21)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenPadding(),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Match Schedule',
+                              style: kText14White,
+                            ),
+                            Text(
+                              'See All',
+                              style: kText12Secondary,
+                            ),
+                          ],
+                        ),
+                        VerticalSpacing(eqH(14)),
+                        const MatchSchedule(),
+                        const MatchSchedule(),
+                        const MatchSchedule(),
+                        const MatchSchedule(),
+                        const MatchSchedule(),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -61,103 +84,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class LiveMatchWidget extends StatelessWidget {
-  const LiveMatchWidget({
+class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({
     super.key,
-    this.notShowing = false,
+    required this.leading,
+    required this.title,
+    required this.trailing,
   });
-  final bool notShowing;
+  final Widget leading;
+  final Widget title;
+  final Widget trailing;
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    // final double screenHeight = MediaQuery.sizeOf(context).height;
     return Padding(
-      padding: EdgeInsets.only(
-        left: screenPadding(screenWidth),
-        right: notShowing ? screenPadding(screenWidth) : 0.0,
-        top: notShowing ? 10.0 : 0.0,
-        bottom: notShowing ? 10.0 : 0.0,
+      padding: EdgeInsets.symmetric(
+        horizontal: screenPadding(),
+        vertical: eqW(12.27),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.05),
-        child: Container(
-          width: eqW(notShowing ? 208 : 224, screenWidth),
-          // height: eqH(notShowing ? 120 : 140, screenHeight),
-          color: kSecondaryColor,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              if (!notShowing) Assets.images.cardLive.svg(fit: BoxFit.cover),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: eqW(15.14, screenWidth),
-                  vertical: 17.52,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '60 : 22',
-                      style: kSmallText,
-                    ),
-                    const VerticalSpacing(7.32),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Assets.images.arsenalFC.image(width: 45.0),
-                        const HorizontalSpacing(23.5),
-                        Text(
-                          '2 - 2',
-                          style: TextStyle(
-                            color: kWhiteColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: eqW(21.03, screenWidth),
-                          ),
-                        ),
-                        const HorizontalSpacing(23.5),
-                        Assets.images.brightonFC.image(width: 45.0),
-                      ],
-                    ),
-                    const VerticalSpacing(15.14),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'De Jong 66’',
-                              style: kSmallText,
-                            ),
-                            Text(
-                              'Depay 79’',
-                              style: kSmallText,
-                            ),
-                          ],
-                        ),
-                        const HorizontalSpacing(23.5),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Alvarez 21’',
-                              style: kSmallText,
-                            ),
-                            Text(
-                              'Palmer 70’',
-                              style: kSmallText,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          leading,
+          title,
+          trailing,
+        ],
       ),
     );
   }
