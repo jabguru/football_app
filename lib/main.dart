@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/global_variables.dart';
-import 'package:football_app/pages/base_screen.dart';
+import 'package:football_app/features/fixtures/presentation/pages/base_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/features/fixtures/presentation/pages/home.dart';
 import 'package:football_app/gen/assets.gen.dart';
-import 'package:football_app/pages/home.dart';
 
 class SingleMatchScreen extends StatelessWidget {
   const SingleMatchScreen({super.key});

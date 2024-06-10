@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/match_card.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/match_schedule.dart';
 import 'package:football_app/gen/assets.gen.dart';
-import 'package:football_app/widgets/match_card.dart';
-import 'package:football_app/widgets/match_schedule.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             CustomAppBar(
               leading: Assets.images.category.image(width: eqW(22.78)),
-              title: Assets.images.liveScore.image(width: eqW(82.35)),
+              title: Assets.images.liveScore.svg(width: eqW(82.35)),
               trailing: Assets.images.notification.image(width: eqW(22.78)),
             ),
             Expanded(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/features/fixtures/presentation/pages/single_match_screen.dart';
 import 'package:football_app/gen/assets.gen.dart';
-import 'package:football_app/pages/single_match_screen.dart';
 
 class LiveMatchWidget extends StatelessWidget {
   const LiveMatchWidget({
