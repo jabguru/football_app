@@ -1,37 +1,80 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
 
-class Fixture {
-  final int id;
-  final Teams teams;
-  final Goals? goals;
-  final Status status;
-  final String date;
-  final int timestamp;
-  Fixture({
-    required this.id,
-    required this.teams,
-    this.goals,
-    required this.status,
-    required this.date,
-    required this.timestamp,
+class FixtureModel extends Fixture {
+  const FixtureModel({
+    required super.id,
+    required super.teams,
+    required super.status,
+    required super.date,
+    required super.timestamp,
+    super.goals,
   });
+
+  FixtureModel copyWith({
+    int? id,
+    Teams? teams,
+    ValueGetter<GoalsModel?>? goals,
+    Status? status,
+    String? date,
+    int? timestamp,
+  }) {
+    return FixtureModel(
+      id: id ?? this.id,
+      teams: teams ?? this.teams,
+      goals: goals != null ? goals() : this.goals,
+      status: status ?? this.status,
+      date: date ?? this.date,
+      timestamp: timestamp ?? this.timestamp,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'teams': (teams as TeamsModel).toMap(),
+      'goals': (goals as GoalsModel?)?.toMap(),
+      'status': (status as StatusModel).toMap(),
+      'date': date,
+      'timestamp': timestamp,
+    };
+  }
+
+  factory FixtureModel.fromMap(Map<String, dynamic> map) {
+    return FixtureModel(
+      id: map['fixture']['id']?.toInt() ?? 0,
+      teams: TeamsModel.fromMap(map['teams']),
+      goals: map['goals'] != null ? GoalsModel.fromMap(map['goals']) : null,
+      status: StatusModel.fromMap(map['fixture']['status']),
+      date: map['fixture']['date'] ?? '',
+      timestamp: map['fixture']['timestamp']?.toInt() ?? 0,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory FixtureModel.fromJson(String source) =>
+      FixtureModel.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'Fixture(id: $id, teams: $teams, goals: $goals, status: $status, date: $date, timestamp: $timestamp)';
+  }
 }
 
-class Teams extends Equatable {
-  final Home home;
-  final Away away;
-  const Teams({
-    required this.home,
-    required this.away,
+class TeamsModel extends Teams {
+  const TeamsModel({
+    required super.home,
+    required super.away,
   });
 
-  Teams copyWith({
-    Home? home,
-    Away? away,
+  TeamsModel copyWith({
+    HomeModel? home,
+    AwayModel? away,
   }) {
-    return Teams(
+    return TeamsModel(
       home: home ?? this.home,
       away: away ?? this.away,
     );
@@ -39,48 +82,42 @@ class Teams extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'home': home.toMap(),
-      'away': away.toMap(),
+      'home': (home as HomeModel).toMap(),
+      'away': (away as AwayModel).toMap(),
     };
   }
 
-  factory Teams.fromMap(Map<String, dynamic> map) {
-    return Teams(
-      home: Home.fromMap(map['home']),
-      away: Away.fromMap(map['away']),
+  factory TeamsModel.fromMap(Map<String, dynamic> map) {
+    return TeamsModel(
+      home: HomeModel.fromMap(map['home']),
+      away: AwayModel.fromMap(map['away']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Teams.fromJson(String source) => Teams.fromMap(json.decode(source));
+  factory TeamsModel.fromJson(String source) =>
+      TeamsModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Teams(home: $home, away: $away)';
-
-  @override
-  List<Object> get props => [home, away];
 }
 
-class Home extends Equatable {
-  final int id;
-  final String name;
-  final String logo;
-  final bool winner;
-  const Home({
-    required this.id,
-    required this.name,
-    required this.logo,
-    required this.winner,
+class HomeModel extends Home {
+  const HomeModel({
+    required super.id,
+    required super.name,
+    required super.logo,
+    required super.winner,
   });
 
-  Home copyWith({
+  HomeModel copyWith({
     int? id,
     String? name,
     String? logo,
     bool? winner,
   }) {
-    return Home(
+    return HomeModel(
       id: id ?? this.id,
       name: name ?? this.name,
       logo: logo ?? this.logo,
@@ -97,8 +134,8 @@ class Home extends Equatable {
     };
   }
 
-  factory Home.fromMap(Map<String, dynamic> map) {
-    return Home(
+  factory HomeModel.fromMap(Map<String, dynamic> map) {
+    return HomeModel(
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
       logo: map['logo'] ?? '',
@@ -108,36 +145,30 @@ class Home extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Home.fromJson(String source) => Home.fromMap(json.decode(source));
+  factory HomeModel.fromJson(String source) =>
+      HomeModel.fromMap(json.decode(source));
 
   @override
   String toString() {
     return 'Home(id: $id, name: $name, logo: $logo, winner: $winner)';
   }
-
-  @override
-  List<Object> get props => [id, name, logo, winner];
 }
 
-class Away extends Equatable {
-  final int id;
-  final String name;
-  final String logo;
-  final bool winner;
-  const Away({
-    required this.id,
-    required this.name,
-    required this.logo,
-    required this.winner,
+class AwayModel extends Away {
+  const AwayModel({
+    required super.id,
+    required super.name,
+    required super.logo,
+    required super.winner,
   });
 
-  Away copyWith({
+  AwayModel copyWith({
     int? id,
     String? name,
     String? logo,
     bool? winner,
   }) {
-    return Away(
+    return AwayModel(
       id: id ?? this.id,
       name: name ?? this.name,
       logo: logo ?? this.logo,
@@ -154,8 +185,8 @@ class Away extends Equatable {
     };
   }
 
-  factory Away.fromMap(Map<String, dynamic> map) {
-    return Away(
+  factory AwayModel.fromMap(Map<String, dynamic> map) {
+    return AwayModel(
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
       logo: map['logo'] ?? '',
@@ -165,30 +196,26 @@ class Away extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Away.fromJson(String source) => Away.fromMap(json.decode(source));
+  factory AwayModel.fromJson(String source) =>
+      AwayModel.fromMap(json.decode(source));
 
   @override
   String toString() {
     return 'Away(id: $id, name: $name, logo: $logo, winner: $winner)';
   }
-
-  @override
-  List<Object> get props => [id, name, logo, winner];
 }
 
-class Goals extends Equatable {
-  final int home;
-  final int away;
-  const Goals({
-    required this.home,
-    required this.away,
+class GoalsModel extends Goals {
+  const GoalsModel({
+    required super.home,
+    required super.away,
   });
 
-  Goals copyWith({
+  GoalsModel copyWith({
     int? home,
     int? away,
   }) {
-    return Goals(
+    return GoalsModel(
       home: home ?? this.home,
       away: away ?? this.away,
     );
@@ -201,8 +228,8 @@ class Goals extends Equatable {
     };
   }
 
-  factory Goals.fromMap(Map<String, dynamic> map) {
-    return Goals(
+  factory GoalsModel.fromMap(Map<String, dynamic> map) {
+    return GoalsModel(
       home: map['home']?.toInt() ?? 0,
       away: map['away']?.toInt() ?? 0,
     );
@@ -210,31 +237,26 @@ class Goals extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Goals.fromJson(String source) => Goals.fromMap(json.decode(source));
+  factory GoalsModel.fromJson(String source) =>
+      GoalsModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Goals(home: $home, away: $away)';
-
-  @override
-  List<Object> get props => [home, away];
 }
 
-class Status extends Equatable {
-  final String long;
-  final String short;
-  final int elapsed;
-  const Status({
-    required this.long,
-    required this.short,
-    required this.elapsed,
+class StatusModel extends Status {
+  const StatusModel({
+    required super.long,
+    required super.short,
+    required super.elapsed,
   });
 
-  Status copyWith({
+  StatusModel copyWith({
     String? long,
     String? short,
     int? elapsed,
   }) {
-    return Status(
+    return StatusModel(
       long: long ?? this.long,
       short: short ?? this.short,
       elapsed: elapsed ?? this.elapsed,
@@ -249,8 +271,8 @@ class Status extends Equatable {
     };
   }
 
-  factory Status.fromMap(Map<String, dynamic> map) {
-    return Status(
+  factory StatusModel.fromMap(Map<String, dynamic> map) {
+    return StatusModel(
       long: map['long'] ?? '',
       short: map['short'] ?? '',
       elapsed: map['elapsed']?.toInt() ?? 0,
@@ -259,7 +281,8 @@ class Status extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Status.fromJson(String source) => Status.fromMap(json.decode(source));
+  factory StatusModel.fromJson(String source) =>
+      StatusModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Status(long: $long, short: $short, elapsed: $elapsed)';

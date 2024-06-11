@@ -6,3 +6,5 @@ abstract class FixturesEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetFixtures extends FixturesEvent {}
