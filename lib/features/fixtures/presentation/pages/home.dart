@@ -90,6 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               return const SizedBox.shrink();
                             },
+                            buildWhen: (previousState, currentState) {
+                              return currentState is GetFixturesLoading ||
+                                  currentState is GetFixturesLoaded ||
+                                  currentState is GetFixturesError;
+                            },
                           ),
                         ],
                       ),

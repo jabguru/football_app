@@ -28,3 +28,23 @@ class GetFixturesError extends FixturesState {
   @override
   List<Object> get props => [message];
 }
+
+class GetStatisticsLoading extends FixturesState {}
+
+class GetStatisticsLoaded extends FixturesState {
+  final Statistics? statistics;
+  const GetStatisticsLoaded({
+    required this.statistics,
+  });
+
+  @override
+  List<Object> get props => [];
+}
+
+class GetStatisticsError extends FixturesState {
+  final String message;
+  const GetStatisticsError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

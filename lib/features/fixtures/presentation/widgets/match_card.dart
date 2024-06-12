@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
-import 'package:football_app/features/fixtures/presentation/pages/single_match_screen.dart';
 import 'package:football_app/gen/assets.gen.dart';
 
 class LiveMatchWidget extends StatelessWidget {
@@ -15,12 +14,12 @@ class LiveMatchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SingleMatchScreen(),
-        ),
-      ),
+      // onTap: () => Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const SingleMatchScreen(),
+      //   ),
+      // ),
       child: Padding(
         padding: EdgeInsets.only(
           left: screenPadding(),

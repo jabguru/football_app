@@ -3,6 +3,7 @@ import 'package:football_app/features/fixtures/data/datasources/fixtures_datasou
 import 'package:football_app/features/fixtures/data/repositories/fixtures_repository_impl.dart';
 import 'package:football_app/features/fixtures/domain/repositories/fixtures_repository.dart';
 import 'package:football_app/features/fixtures/domain/usecases/get_fixtures.dart';
+import 'package:football_app/features/fixtures/domain/usecases/get_statistics.dart';
 import 'package:football_app/features/fixtures/presentation/bloc/fixtures_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -25,11 +26,13 @@ void setupLocator() {
 
   // ? USE CASES
   sl.registerSingleton(GetFixturesUsecase(sl()));
+  sl.registerSingleton(GetStatisticsUsecase(sl()));
 
   // ? BLOC
   sl.registerFactory(
     () => FixturesBloc(
       getFixturesUsecase: sl(),
+      getStatisticsUsecase: sl(),
     ),
   );
 }

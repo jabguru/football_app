@@ -1,32 +1,60 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
+import 'package:football_app/features/fixtures/domain/entities/statistics.dart';
 
-class Statistics extends Equatable {
-  final TeamStatistics team1;
-  final TeamStatistics team2;
-  const Statistics({
-    required this.team1,
-    required this.team2,
+class StatisticsModel extends Statistics {
+  const StatisticsModel({
+    required super.team1,
+    required super.team2,
   });
 
   @override
-  List<Object?> get props => [team1, team2];
+  List<Object> get props => [team1, team2];
+
+  StatisticsModel copyWith({
+    TeamStatisticsModel? team1,
+    TeamStatisticsModel? team2,
+  }) {
+    return StatisticsModel(
+      team1: team1 ?? this.team1,
+      team2: team2 ?? this.team2,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'team1': (team1 as TeamStatisticsModel).toMap(),
+      'team2': (team2 as TeamStatisticsModel).toMap(),
+    };
+  }
+
+  factory StatisticsModel.fromMap(Map<String, dynamic> map) {
+    return StatisticsModel(
+      team1: TeamStatisticsModel.fromMap(map['team1']),
+      team2: TeamStatisticsModel.fromMap(map['team2']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory StatisticsModel.fromJson(String source) =>
+      StatisticsModel.fromMap(json.decode(source));
+
+  @override
+  String toString() => 'Statistics(team1: $team1, team2: $team2)';
 }
 
-class TeamStatistics extends Equatable {
-  final Team team;
-  final List<Statistic> statistics;
-  const TeamStatistics({
-    required this.team,
-    required this.statistics,
+class TeamStatisticsModel extends TeamStatistics {
+  const TeamStatisticsModel({
+    required super.team,
+    required super.statistics,
   });
 
-  TeamStatistics copyWith({
-    Team? team,
-    List<Statistic>? statistics,
+  TeamStatisticsModel copyWith({
+    TeamModel? team,
+    List<StatisticModel>? statistics,
   }) {
-    return TeamStatistics(
+    return TeamStatisticsModel(
       team: team ?? this.team,
       statistics: statistics ?? this.statistics,
     );
@@ -34,23 +62,24 @@ class TeamStatistics extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'team': team.toMap(),
-      'statistics': statistics.map((x) => x.toMap()).toList(),
+      'team': (team as TeamModel).toMap(),
+      'statistics':
+          statistics.map((x) => (x as StatisticModel).toMap()).toList(),
     };
   }
 
-  factory TeamStatistics.fromMap(Map<String, dynamic> map) {
-    return TeamStatistics(
-      team: Team.fromMap(map['team']),
-      statistics: List<Statistic>.from(
-          map['statistics']?.map((x) => Statistic.fromMap(x))),
+  factory TeamStatisticsModel.fromMap(Map<String, dynamic> map) {
+    return TeamStatisticsModel(
+      team: TeamModel.fromMap(map['team']),
+      statistics: List<StatisticModel>.from(
+          map['statistics']?.map((x) => StatisticModel.fromMap(x))),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TeamStatistics.fromJson(String source) =>
-      TeamStatistics.fromMap(json.decode(source));
+  factory TeamStatisticsModel.fromJson(String source) =>
+      TeamStatisticsModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Statistics(team: $team, statistics: $statistics)';
@@ -59,22 +88,19 @@ class TeamStatistics extends Equatable {
   List<Object> get props => [team, statistics];
 }
 
-class Team extends Equatable {
-  final int id;
-  final String name;
-  final String logo;
-  const Team({
-    required this.id,
-    required this.name,
-    required this.logo,
+class TeamModel extends Team {
+  const TeamModel({
+    required super.id,
+    required super.name,
+    required super.logo,
   });
 
-  Team copyWith({
+  TeamModel copyWith({
     int? id,
     String? name,
     String? logo,
   }) {
-    return Team(
+    return TeamModel(
       id: id ?? this.id,
       name: name ?? this.name,
       logo: logo ?? this.logo,
@@ -89,8 +115,8 @@ class Team extends Equatable {
     };
   }
 
-  factory Team.fromMap(Map<String, dynamic> map) {
-    return Team(
+  factory TeamModel.fromMap(Map<String, dynamic> map) {
+    return TeamModel(
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
       logo: map['logo'] ?? '',
@@ -99,7 +125,8 @@ class Team extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Team.fromJson(String source) => Team.fromMap(json.decode(source));
+  factory TeamModel.fromJson(String source) =>
+      TeamModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Team(id: $id, name: $name, logo: $logo)';
@@ -108,19 +135,18 @@ class Team extends Equatable {
   List<Object> get props => [id, name, logo];
 }
 
-class Statistic extends Equatable {
-  final String type;
-  final int value;
-  const Statistic({
-    required this.type,
-    required this.value,
+class StatisticModel extends Statistic {
+  const StatisticModel({
+    required super.type,
+    required super.value,
   });
 
-  Statistic copyWith({
+  @override
+  StatisticModel copyWith({
     String? type,
-    int? value,
+    String? value,
   }) {
-    return Statistic(
+    return StatisticModel(
       type: type ?? this.type,
       value: value ?? this.value,
     );
@@ -133,17 +159,18 @@ class Statistic extends Equatable {
     };
   }
 
-  factory Statistic.fromMap(Map<String, dynamic> map) {
-    return Statistic(
+  factory StatisticModel.fromMap(Map<String, dynamic> map) {
+    return StatisticModel(
       type: map['type'] ?? '',
-      value: map['value']?.toInt() ?? 0,
+      value:
+          map['value'] is int ? map['value'].toString() : (map['value'] ?? ''),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Statistic.fromJson(String source) =>
-      Statistic.fromMap(json.decode(source));
+  factory StatisticModel.fromJson(String source) =>
+      StatisticModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'Statistic(type: $type, value: $value)';

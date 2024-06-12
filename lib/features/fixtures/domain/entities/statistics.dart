@@ -40,7 +40,7 @@ class Team extends Equatable {
 
 class Statistic extends Equatable {
   final String type;
-  final int value;
+  final String value;
   const Statistic({
     required this.type,
     required this.value,
@@ -48,7 +48,7 @@ class Statistic extends Equatable {
 
   Statistic copyWith({
     String? type,
-    int? value,
+    String? value,
   }) {
     return Statistic(
       type: type ?? this.type,

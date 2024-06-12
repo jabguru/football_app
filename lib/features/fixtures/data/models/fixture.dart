@@ -18,7 +18,7 @@ class FixtureModel extends Fixture {
     Teams? teams,
     ValueGetter<GoalsModel?>? goals,
     Status? status,
-    String? date,
+    DateTime? date,
     int? timestamp,
   }) {
     return FixtureModel(
@@ -48,7 +48,7 @@ class FixtureModel extends Fixture {
       teams: TeamsModel.fromMap(map['teams']),
       goals: map['goals'] != null ? GoalsModel.fromMap(map['goals']) : null,
       status: StatusModel.fromMap(map['fixture']['status']),
-      date: map['fixture']['date'] ?? '',
+      date: DateTime.parse(map['fixture']['date']),
       timestamp: map['fixture']['timestamp']?.toInt() ?? 0,
     );
   }

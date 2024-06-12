@@ -4,7 +4,7 @@ class Fixture extends Equatable {
   final int id;
   final Teams teams;
   final Status status;
-  final String date;
+  final DateTime date;
   final int timestamp;
   final Goals? goals;
   const Fixture({

@@ -4,13 +4,13 @@ import 'package:football_app/core/usecase.dart';
 import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
 import 'package:football_app/features/fixtures/domain/repositories/fixtures_repository.dart';
 
-class GetFixturesUsecase extends UseCase<List<Fixture>> {
+class GetFixturesUsecase extends UseCase<List<Fixture>, NoParams> {
   final FixturesRepository repository;
 
   GetFixturesUsecase(this.repository);
 
   @override
-  Future<Either<Failure, List<Fixture>>> call() async {
+  Future<Either<Failure, List<Fixture>>> call([NoParams? params]) async {
     return await repository.getFixtures();
   }
 }

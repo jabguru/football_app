@@ -1,12 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
+import 'package:football_app/features/fixtures/presentation/bloc/fixtures_bloc.dart';
 import 'package:football_app/features/fixtures/presentation/pages/home.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/cached_network_image.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/error_alert_widget.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/progress_indicator.dart';
 import 'package:football_app/gen/assets.gen.dart';
+import 'package:intl/intl.dart';
 
-class SingleMatchScreen extends StatelessWidget {
-  const SingleMatchScreen({super.key});
+class SingleMatchScreen extends StatefulWidget {
+  final Fixture fixture;
+  const SingleMatchScreen({
+    super.key,
+    required this.fixture,
+  });
+
+  @override
+  State<SingleMatchScreen> createState() => _SingleMatchScreenState();
+}
+
+class _SingleMatchScreenState extends State<SingleMatchScreen> {
+  String _time = '';
+  String _score = '';
+  @override
+  void initState() {
+    super.initState();
+    _getMatchStatus();
+    context.read<FixturesBloc>().add(
+          GetStatistics(
+            fixtureId: widget.fixture.id,
+          ),
+        );
+  }
+
+  void _getMatchStatus() {
+    _score =
+        '${widget.fixture.goals?.home ?? 0}    -   ${widget.fixture.goals?.away ?? 0}';
+    switch (widget.fixture.status.short) {
+      case 'LIVE':
+        _time = 'LIVE';
+      case 'FT':
+        _time = 'Full Time';
+      case 'HT':
+        _time = 'Half Time';
+
+      case 'TBD':
+        _time = 'TBD';
+        _score = '-';
+        break;
+
+      case 'CANC' || 'PST' || 'ABD' || 'AWD' || 'WO' || 'SUSP':
+        _time = 'Cancelled';
+        _score = '-';
+        break;
+      default:
+        _score = DateFormat.jm().format(widget.fixture.date);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +91,7 @@ class SingleMatchScreen extends StatelessWidget {
                         const VerticalSpacing(20),
                         Center(
                           child: Text(
-                            'Full Time',
+                            _time,
                             style: kText10MatchTime,
                           ),
                         ),
@@ -47,56 +101,66 @@ class SingleMatchScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Assets.images.arsenalFC.image(width: 65.0),
+                              cachedNetworkImage(
+                                widget.fixture.teams.home.logo,
+                                color: kScaffoldColor,
+                                width: 65.0,
+                              ),
                               const HorizontalSpacing(23.5),
                               Text(
-                                '2    -   2',
+                                _score,
                                 style: TextStyle(
                                   color: kWhiteColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: eqW(23),
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               const HorizontalSpacing(23.5),
-                              Assets.images.brightonFC.image(width: 65.0),
+                              cachedNetworkImage(
+                                widget.fixture.teams.away.logo,
+                                color: kScaffoldColor,
+                                width: 65.0,
+                              ),
                             ],
                           ),
                         ),
                         const VerticalSpacing(20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'De Jong 66’',
-                                  style: kText10White,
-                                ),
-                                VerticalSpacing(eqH(6)),
-                                Text(
-                                  'Depay 79’',
-                                  style: kText10White,
-                                ),
-                              ],
-                            ),
-                            const HorizontalSpacing(23.5),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Alvarez 21’',
-                                  style: kText10White,
-                                ),
-                                VerticalSpacing(eqH(6)),
-                                Text(
-                                  'Palmer 70’',
-                                  style: kText10White,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Text(
+                        //           'De Jong 66’',
+                        //           style: kText10White,
+                        //         ),
+                        //         VerticalSpacing(eqH(6)),
+                        //         Text(
+                        //           'Depay 79’',
+                        //           style: kText10White,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     const HorizontalSpacing(23.5),
+                        //     Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.end,
+                        //       children: [
+                        //         Text(
+                        //           'Alvarez 21’',
+                        //           style: kText10White,
+                        //         ),
+                        //         VerticalSpacing(eqH(6)),
+                        //         Text(
+                        //           'Palmer 70’',
+                        //           style: kText10White,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
+
                         VerticalSpacing(eqH(16)),
                         Column(
                           children: [
@@ -105,55 +169,68 @@ class SingleMatchScreen extends StatelessWidget {
                               style: kText14White,
                             ),
                             VerticalSpacing(eqH(14)),
-                            const StatisticWidget(
-                              home: '11',
-                              title: 'Shot',
-                              away: '16',
-                            ),
-                            const StatisticWidget(
-                              home: '7',
-                              title: 'Shot on Target',
-                              away: '8',
-                            ),
-                            const StatisticWidget(
-                              home: '48%',
-                              title: 'Ball Possession',
-                              away: '52%',
-                            ),
-                            const StatisticWidget(
-                              home: '500',
-                              title: 'Pass',
-                              away: '532',
-                            ),
-                            const StatisticWidget(
-                              home: '89%',
-                              title: 'Pass Accuracy',
-                              away: '90%',
-                            ),
-                            const StatisticWidget(
-                              home: '7',
-                              title: 'Foul',
-                              away: '13',
-                            ),
-                            const StatisticWidget(
-                              home: '0',
-                              title: 'Yellow Card',
-                              away: '1',
-                            ),
-                            const StatisticWidget(
-                              home: '0',
-                              title: 'Red Card',
-                              away: '0',
-                            ),
-                            const StatisticWidget(
-                              home: '1',
-                              title: 'Offside',
-                              away: '5',
-                            ),
-                            const StatisticWidget(
-                              home: '3',
-                              title: 'Corner Kick',
-                              away: '2',
+                            BlocBuilder<FixturesBloc, FixturesState>(
+                              builder: (context, state) {
+                                if (state is GetStatisticsLoading) {
+                                  return const CustomProgressIndicator();
+                                } else if (state is GetStatisticsLoaded) {
+                                  if (state.statistics != null) {
+                                    bool teamOneIsHome = false;
+                                    if (state.statistics!.team1.team.id ==
+                                        widget.fixture.teams.home.id) {
+                                      teamOneIsHome = true;
+                                    }
+                                    return Column(
+                                      children: teamOneIsHome
+                                          ? state.statistics!.team1.statistics
+                                              .where((element) =>
+                                                  element.value.isNotEmpty)
+                                              .map(
+                                                (e) => StatisticWidget(
+                                                  home: e.value.toString(),
+                                                  title: e.type,
+                                                  away: state.statistics!.team2
+                                                      .statistics
+                                                      .where((st) =>
+                                                          st.type == e.type)
+                                                      .first
+                                                      .value
+                                                      .toString(),
+                                                ),
+                                              )
+                                              .toList()
+                                          : state.statistics!.team2.statistics
+                                              .where((element) =>
+                                                  element.value.isNotEmpty)
+                                              .map(
+                                                (e) => StatisticWidget(
+                                                  home: e.value.toString(),
+                                                  title: e.type,
+                                                  away: state.statistics!.team1
+                                                      .statistics
+                                                      .where((st) =>
+                                                          st.type == e.type)
+                                                      .first
+                                                      .value
+                                                      .toString(),
+                                                ),
+                                              )
+                                              .toList(),
+                                    );
+                                  }
+
+                                  return Text(
+                                    'Statistics Unavailable',
+                                    style: kText12White,
+                                  );
+                                } else if (state is GetStatisticsError) {
+                                  return ErrorAlertWidget(
+                                    title: 'Error loading statistics...',
+                                    message: state.message,
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
                             ),
                           ],
                         )
