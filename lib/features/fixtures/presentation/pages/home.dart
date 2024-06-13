@@ -39,67 +39,81 @@ class _HomeScreenState extends State<HomeScreen> {
                 onRefresh: () async {
                   context.read<FixturesBloc>().add(GetFixtures());
                 },
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: eqH(140),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: const [
-                          LiveMatchWidget(),
-                          LiveMatchWidget(notStarted: true),
-                        ],
-                      ),
-                    ),
-                    VerticalSpacing(eqH(21)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenPadding(),
-                      ),
-                      child: Column(
+                child: BlocBuilder<FixturesBloc, FixturesState>(
+                  builder: (context, state) {
+                    if (state is GetFixturesLoading) {
+                      return const Center(child: CustomProgressIndicator());
+                    } else if (state is GetFixturesError) {
+                      return ErrorAlertWidget(
+                        title: 'Error loading fixtures...',
+                        message: state.message,
+                      );
+                    } else if (state is GetFixturesLoaded) {
+                      //  LiveMatchWidget(notStarted: true),
+                      final liveMatches = state.fixtures
+                          .where((element) => element.status.short == 'LIVE');
+                      return ListView(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Match Schedule',
-                                style: kText14White,
+                          if (liveMatches.isNotEmpty)
+                            SizedBox(
+                              // ? This is the correct height when goalscorers are shown in LiveCardWiget
+                              // height: eqH(140),
+                              height: eqH(100),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: liveMatches
+                                    .map(
+                                      (e) => LiveMatchWidget(fixture: e),
+                                    )
+                                    .toList(),
                               ),
-                              Text(
-                                'See All',
-                                style: kText12Secondary,
-                              ),
-                            ],
-                          ),
-                          VerticalSpacing(eqH(14)),
-                          BlocBuilder<FixturesBloc, FixturesState>(
-                            builder: (context, state) {
-                              if (state is GetFixturesLoading) {
-                                return const CustomProgressIndicator();
-                              } else if (state is GetFixturesLoaded) {
-                                return Column(
+                            ),
+                          VerticalSpacing(eqH(21)),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenPadding(),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Match Schedule',
+                                      style: kText14White,
+                                    ),
+                                    Text(
+                                      'See All',
+                                      style: kText12Secondary,
+                                    ),
+                                  ],
+                                ),
+                                VerticalSpacing(eqH(14)),
+                                Column(
                                   children: state.fixtures
+                                      .where(
+                                        (e) =>
+                                            (e.date.isBefore(DateTime.now()) &&
+                                                e.status.short != 'NS') ||
+                                            e.date.isAfter(DateTime.now()),
+                                      )
                                       .map((e) => MatchSchedule(fixture: e))
                                       .toList(),
-                                );
-                              } else if (state is GetFixturesError) {
-                                return ErrorAlertWidget(
-                                  title: 'Error loading fixtures...',
-                                  message: state.message,
-                                );
-                              }
-                              return const SizedBox.shrink();
-                            },
-                            buildWhen: (previousState, currentState) {
-                              return currentState is GetFixturesLoading ||
-                                  currentState is GetFixturesLoaded ||
-                                  currentState is GetFixturesError;
-                            },
-                          ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                  buildWhen: (previousState, currentState) {
+                    return currentState is GetFixturesLoading ||
+                        currentState is GetFixturesLoaded ||
+                        currentState is GetFixturesError;
+                  },
                 ),
               ),
             ),

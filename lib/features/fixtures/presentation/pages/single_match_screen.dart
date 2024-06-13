@@ -74,7 +74,6 @@ class _SingleMatchScreenState extends State<SingleMatchScreen> {
               children: [
                 CustomAppBar(
                   leading: GestureDetector(
-                      // TODO: FIX after implementing navigation
                       onTap: () => Navigator.pop(context),
                       child: Assets.images.iconBack.svg(width: eqW(21))),
                   title: Text(

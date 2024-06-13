@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
+import 'package:football_app/features/fixtures/presentation/pages/single_match_screen.dart';
+import 'package:football_app/features/fixtures/presentation/widgets/cached_network_image.dart';
 import 'package:football_app/gen/assets.gen.dart';
 
 class LiveMatchWidget extends StatelessWidget {
+  final Fixture fixture;
   const LiveMatchWidget({
     super.key,
+    required this.fixture,
     this.notStarted = false,
   });
   final bool notStarted;
@@ -14,12 +19,12 @@ class LiveMatchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => const SingleMatchScreen(),
-      //   ),
-      // ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SingleMatchScreen(fixture: fixture),
+        ),
+      ),
       child: Padding(
         padding: EdgeInsets.only(
           left: screenPadding(),
@@ -46,17 +51,21 @@ class LiveMatchWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '60 : 22',
+                        'LIVE',
                         style: kSmallText,
                       ),
                       const VerticalSpacing(7.32),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Assets.images.arsenalFC.image(width: 45.0),
+                          cachedNetworkImage(
+                            fixture.teams.home.logo,
+                            color: kScaffoldColor,
+                            width: 45.0,
+                          ),
                           const HorizontalSpacing(23.5),
                           Text(
-                            '2 - 2',
+                            '${fixture.goals?.home ?? 0} - ${fixture.goals?.away ?? 0}',
                             style: TextStyle(
                               color: kWhiteColor,
                               fontWeight: FontWeight.w600,
@@ -64,42 +73,46 @@ class LiveMatchWidget extends StatelessWidget {
                             ),
                           ),
                           const HorizontalSpacing(23.5),
-                          Assets.images.brightonFC.image(width: 45.0),
-                        ],
-                      ),
-                      const VerticalSpacing(15.14),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'De Jong 66’',
-                                style: kSmallText,
-                              ),
-                              Text(
-                                'Depay 79’',
-                                style: kSmallText,
-                              ),
-                            ],
-                          ),
-                          const HorizontalSpacing(23.5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Alvarez 21’',
-                                style: kSmallText,
-                              ),
-                              Text(
-                                'Palmer 70’',
-                                style: kSmallText,
-                              ),
-                            ],
+                          cachedNetworkImage(
+                            fixture.teams.away.logo,
+                            color: kScaffoldColor,
+                            width: 45.0,
                           ),
                         ],
                       ),
+                      // const VerticalSpacing(15.14),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           'De Jong 66’',
+                      //           style: kSmallText,
+                      //         ),
+                      //         Text(
+                      //           'Depay 79’',
+                      //           style: kSmallText,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     const HorizontalSpacing(23.5),
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.end,
+                      //       children: [
+                      //         Text(
+                      //           'Alvarez 21’',
+                      //           style: kSmallText,
+                      //         ),
+                      //         Text(
+                      //           'Palmer 70’',
+                      //           style: kSmallText,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 )

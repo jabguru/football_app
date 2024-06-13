@@ -48,7 +48,9 @@ class FixtureModel extends Fixture {
       teams: TeamsModel.fromMap(map['teams']),
       goals: map['goals'] != null ? GoalsModel.fromMap(map['goals']) : null,
       status: StatusModel.fromMap(map['fixture']['status']),
-      date: DateTime.parse(map['fixture']['date']),
+      // ? I'm adding 1hour because it's returning utc.
+      date:
+          DateTime.parse(map['fixture']['date']).add(const Duration(hours: 1)),
       timestamp: map['fixture']['timestamp']?.toInt() ?? 0,
     );
   }

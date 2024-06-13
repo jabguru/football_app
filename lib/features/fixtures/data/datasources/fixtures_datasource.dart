@@ -21,6 +21,7 @@ class FixturesDatasourceImpl implements FixturesDatasource {
     final Response res = await dio.get(
       UrlService.fixtures,
       queryParameters: {
+        // ? THIS TIMEZONE PARAM IS NOT WORKING, IT DOESN'T HAVE IMPACT
         'timezone': "Africa/Lagos",
         'date': DateFormat('y-MM-d').format(DateTime.now()),
       },
