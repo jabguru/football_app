@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_app/constants/colors.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
+import 'package:football_app/core/utils/extensions/str_extension.dart';
 import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
 import 'package:football_app/features/fixtures/presentation/bloc/fixtures_bloc.dart';
 import 'package:football_app/features/fixtures/presentation/pages/home.dart';
@@ -269,7 +270,7 @@ class StatisticWidget extends StatelessWidget {
             style: kText14White,
           ),
           Text(
-            title,
+            title.snakeToCamelTitleCase,
             style: kText12GreyR,
           ),
           Text(
