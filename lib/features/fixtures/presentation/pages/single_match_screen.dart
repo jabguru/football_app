@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_app/constants/colors.dart';
+import 'package:football_app/constants/match_states.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
 import 'package:football_app/core/utils/extensions/str_extension.dart';
@@ -41,25 +42,20 @@ class _SingleMatchScreenState extends State<SingleMatchScreen> {
   void _getMatchStatus() {
     _score =
         '${widget.fixture.goals?.home ?? 0}    -   ${widget.fixture.goals?.away ?? 0}';
-    switch (widget.fixture.status.short) {
-      case 'LIVE':
-        _time = 'LIVE';
-      case 'FT':
-        _time = 'Full Time';
-      case 'HT':
-        _time = 'Half Time';
-
-      case 'TBD':
-        _time = 'TBD';
-        _score = '-';
-        break;
-
-      case 'CANC' || 'PST' || 'ABD' || 'AWD' || 'WO' || 'SUSP':
-        _time = 'Cancelled';
-        _score = '-';
-        break;
-      default:
-        _score = DateFormat.jm().format(widget.fixture.date);
+    if (widget.fixture.status.short case 'HT') {
+      _time = 'Half Time';
+    } else if (kMatchInPlay.contains(widget.fixture.status.short)) {
+      _time = 'LIVE';
+    } else if (kMatchFinished.contains(widget.fixture.status.short)) {
+      _time = 'Full Time';
+    } else if (widget.fixture.status.short case 'TBD') {
+      _time = 'TBD';
+      _score = '-';
+    } else if (kMatchCancelled.contains(widget.fixture.status.short)) {
+      _time = 'Cancelled';
+      _score = '-';
+    } else {
+      _score = DateFormat.jm().format(widget.fixture.date);
     }
   }
 

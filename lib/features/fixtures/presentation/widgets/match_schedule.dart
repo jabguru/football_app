@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_app/constants/colors.dart';
+import 'package:football_app/constants/match_states.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
 import 'package:football_app/features/fixtures/domain/entities/fixture.dart';
@@ -75,82 +76,71 @@ class MatchSchedule extends StatelessWidget {
   }
 
   Widget _getMatchStatus() {
-    switch (fixture.status.short) {
-      case 'LIVE':
-        return Column(
-          children: [
-            Text(
-              '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
-              style: kText14White,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'LIVE',
-              style: kText10MatchTime,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      case 'FT':
-        return Column(
-          children: [
-            Text(
-              '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
-              style: kText12White,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'FT',
-              style: kText10White,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      case 'HT':
-        return Column(
-          children: [
-            Text(
-              '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
-              style: kText12White,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'HT',
-              style: kText10White,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        );
-      case 'TBD':
-        return Text(
-          'TBD',
-          style: kText12White,
-          textAlign: TextAlign.center,
-        );
-      case 'CANC' || 'PST' || 'ABD' || 'AWD' || 'WO' || 'SUSP':
-        return Text(
-          'Canc.',
-          style: kText12White,
-          textAlign: TextAlign.center,
-        );
-      default:
-        return Text(
-          DateFormat.jm().format(fixture.date),
-          style: kText12White,
-          textAlign: TextAlign.center,
-        );
-      // return Column(
-      //   children: [
-      //     Text(
-      //       '27 Aug 2022',
-      //       style: kText10White,
-      //     ),
-      //     Text(
-      //       '01.40',
-      //       style: kText10White,
-      //     ),
-      //   ],
-      // );
+    String matchStatus = fixture.status.short;
+
+    if (fixture.status.short == 'HT') {
+      return Column(
+        children: [
+          Text(
+            '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
+            style: kText12White,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'HT',
+            style: kText10White,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    } else if (kMatchInPlay.contains(matchStatus)) {
+      return Column(
+        children: [
+          Text(
+            '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
+            style: kText14White,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'LIVE',
+            style: kText10MatchTime,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    } else if (kMatchFinished.contains(matchStatus)) {
+      return Column(
+        children: [
+          Text(
+            '${fixture.goals?.home ?? 0}  :  ${fixture.goals?.away ?? 0}',
+            style: kText12White,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'FT',
+            style: kText10White,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    } else if (fixture.status.short == 'TBD') {
+      return Text(
+        'TBD',
+        style: kText12White,
+        textAlign: TextAlign.center,
+      );
+    } else if (kMatchCancelled.contains(matchStatus)) {
+      return Text(
+        'Canc.',
+        style: kText12White,
+        textAlign: TextAlign.center,
+      );
+    } else {
+      return Text(
+        DateFormat.jm().format(fixture.date),
+        style: kText12White,
+        textAlign: TextAlign.center,
+      );
     }
   }
 }

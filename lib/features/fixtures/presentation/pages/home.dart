@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:football_app/constants/match_states.dart';
 import 'package:football_app/constants/size.dart';
 import 'package:football_app/constants/text_styles.dart';
 import 'package:football_app/features/fixtures/presentation/bloc/fixtures_bloc.dart';
@@ -50,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     } else if (state is GetFixturesLoaded) {
                       //  LiveMatchWidget(notStarted: true),
-                      final liveMatches = state.fixtures
-                          .where((element) => element.status.short == 'LIVE');
+                      final liveMatches = state.fixtures.where((element) =>
+                          kMatchInPlay.contains(element.status.short));
                       return ListView(
                         children: [
                           if (liveMatches.isNotEmpty)
