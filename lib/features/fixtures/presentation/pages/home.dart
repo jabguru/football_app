@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           VerticalSpacing(eqH(21)),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: screenPadding(),
+                              horizontal: screenPadding,
                             ),
                             child: Column(
                               children: [
@@ -140,7 +140,7 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: screenPadding(),
+        horizontal: screenPadding,
         vertical: eqW(12.27),
       ),
       child: Row(

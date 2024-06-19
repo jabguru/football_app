@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:football_app/core/services/base_screen.dart';
 import 'package:football_app/features/fixtures/presentation/pages/home.dart';
@@ -33,15 +31,7 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (bool didPop) async {
-        if (didPop) return;
-        if (Platform.isAndroid) {
-          // showExitDialog(context);
-        }
-      },
       child: Scaffold(
-        // key: GlobalVariables.homeScaffoldKey,
-        // drawer: const AppDrawer(),
         body: PageView(
           controller: BaseScreenService.basePageController,
           onPageChanged: onPageChanged,

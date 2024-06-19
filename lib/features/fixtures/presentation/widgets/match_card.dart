@@ -27,8 +27,8 @@ class LiveMatchWidget extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.only(
-          left: screenPadding(),
-          right: notStarted ? screenPadding() : 0.0,
+          left: screenPadding,
+          right: notStarted ? screenPadding : 0.0,
           top: notStarted ? 10.0 : 0.0,
           bottom: notStarted ? 10.0 : 0.0,
         ),

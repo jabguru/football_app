@@ -62,4 +62,4 @@ EdgeInsetsGeometry pad({
 
 width(BuildContext context) => MediaQuery.of(context).size.width;
 
-double screenPadding() => eqW(14.02);
+double get screenPadding => eqW(14.02);

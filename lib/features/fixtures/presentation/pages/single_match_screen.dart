@@ -81,7 +81,7 @@ class _SingleMatchScreenState extends State<SingleMatchScreen> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: screenPadding()),
+                    padding: EdgeInsets.symmetric(horizontal: screenPadding),
                     child: Column(
                       children: [
                         const VerticalSpacing(20),
