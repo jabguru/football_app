@@ -23,7 +23,7 @@ class FixturesDatasourceImpl implements FixturesDatasource {
       queryParameters: {
         // ? THIS TIMEZONE PARAM IS NOT WORKING, IT DOESN'T HAVE IMPACT
         'timezone': "Africa/Lagos",
-        'date': DateFormat('y-MM-d').format(DateTime.now()),
+        'date': DateFormat('y-MM-dd').format(DateTime.now()),
       },
       options: Options(headers: {'x-apisports-key': kFootballApiKey}),
     );
